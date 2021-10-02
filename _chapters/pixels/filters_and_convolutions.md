@@ -1,3 +1,9 @@
+---
+title: Filters and convolutions
+keywords: (insert comma-separated keywords here)
+order: 3 # Lecture number for 2020
+---
+
 # CS 131 Lecture 3 Notes: Filtering
 
 ## Linear Systems
