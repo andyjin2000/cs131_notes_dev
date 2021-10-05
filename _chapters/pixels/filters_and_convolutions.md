@@ -265,17 +265,23 @@ The following is the algorithm of computing convolution for 2D discrete values:
 Let's look at a few basic examples of multiplying a kernel with an actual image. 
 
 Consider the effect of this kernel on an image:
+
 ![](https://imgur.com/m0Kva3U.png)
+
 There are a few things of note here. First, this kernel is perfectly symmetrical, which means that flipping has no effect on it. Also, every coeffecient except for the center value is 0. Due to this, peforming an elementwise multiplication will return the value at the center pixel. As a result, this particular kernel is a sort of **Identity Kernel** that when applied to an image, will return the image itself.
 
 For another example, consider the following kernel:
+
 ![](https://imgur.com/301khsT.png)
+
 We first flip the kernel, relocating the 1 to the left and then perform an elementwise mutliplication. As we can see, this outputs the leftmost pixel for a given location. As a result, when applying the kernel to an image, the returned image will be shifted one pixel to the right.
 
 Convolution also allows us to perform other effects, such as sharpening. This is the combination of kernels to sharpen an image:
+
 ![](https://imgur.com/JHzE0Zr.png)
 
 First, we can break down the first kernel into a sum of two identity kernels, like so:
+
 ![](https://imgur.com/xZYpFJG.png)
 
 The function of the last kernel is to blur an image. Together, the last 2 kernels take the original image (Identity Kernel) and remove the blur, leaving only the details. Then, those details are added to the original image again, sharpening it.
@@ -286,12 +292,15 @@ Computers will only convolve finite support signals; that is to say that any $(n
 
 Therefore, having finite sizes, we can know that if we have an image with dimensions $N1$x$M1$ convolved with a kernel with dimensions $N2$x$M2$, that the output would have dimensions of 
 $(N1 + N2 - 1)$x$(M1 + M2 - 1)$.
+
  ![](https://i.imgur.com/ese8Owm.webp?maxwidth=760&fidelity=grand)
 
 To reach the dimensions of $(N1 + N2 - 1) \times (M1 + M2 - 1)$, we can imagine the worst edge case in which there is only a 1 pixel overlap between that image and the kernel for the convolution. 
+
 ![](https://i.imgur.com/1D5r1gB.png)
 
-Another such bounding edge case, would be with the edges themselves. 
+Another such bounding edge case, would be with the edges themselves.
+
 ![](https://i.imgur.com/ea1cNBv.png)
 
 When we convolve around the edges of the image, the kernel invariably goes outside of the range of the image. To continue the convolution there are a variety of strategies that can be employed:
@@ -309,6 +318,7 @@ The Cross Correlation of two 2D signals $f[n,m]$ and $h[n,m]$ is given by the eq
 $$f[n,m] ** h[n,m] = \sum_{k=-\infty}^{\infty} \sum_{l=-\infty}^{\infty} f[k,l] \cdot h[n+k,m+l]$$
 
 As seen, correlations are equivalent to convolutions without the horizontal and vertical flipping of the kernel. However, due to the flipping, Convolutions and Correlations _**DO NOT**_ produce the same result.
+
 ![](https://imgur.com/3qS4Dw8.png)
 
 The Convolution of $f*g$ and the Correlation of $f**g$ are equivalent only when $g$ is symmetrical, as $g$ would remain unchanged after flipping. 
@@ -318,19 +328,23 @@ The Convolution of $f*g$ and the Correlation of $f**g$ are equivalent only when 
 Let's imagine that there is an image $f$ that is our target image. 
 
 ![](https://i.imgur.com/lP8LuIx.png)
+
 Now let us imagine that there is an image $g$ that is image $f$ with the addition of noise. 
 
 ![](https://i.imgur.com/0o9uQ9l.png)
+
 From image $g$ we wish to find the locations of the black squares in image $f$.
 
 One method to find where the black squares are located would be to implement a threshold on the intensity values. However, there is too much noise present in $g$ that such a method is unviable.
 
 ![](https://i.imgur.com/mI2tkCU.png)
+
 However, if we were to instead try to find the correlation between a single black square $h$, the areas we are trying to identify, and $g$, our output would be an image with the areas most similar to $h$ in $g$ as the darkest.
 
 ![](https://imgur.com/SjzkuRj.png)
 
 Now applying a threshold to the output image $r$, we are given a closer approximation of where the black squares were originally.
+
 ![](https://imgur.com/tEjF4nc.png)
 
 For a real life example, let us take the case of stereo vision, triangulating a position to estimate the depth of a point in a given scene. 
