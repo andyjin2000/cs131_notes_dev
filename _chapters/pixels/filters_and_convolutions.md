@@ -235,7 +235,7 @@ $$g[n,m]=\sum_{k=-\infty}^\infty\sum_{l=-\infty}^\infty f[k,l]\cdot S\{\delta_2[
 Finally, we use our knowledge that $\delta_2[n,m] \overset{\mathcal{S}}\rightarrow h[n,m]$, and we apply the Shift-Invariance Property, which allows us to write the equation as follows:
 $$f[n,m] * h[n,m]= (f*h)[n,m] = g[n,m]=\sum_{k=-\infty}^\infty\sum_{l=-\infty}^\infty f[k,l]\cdot h[n-k,m-l]$$
 
-This operation is referred to as **2D discrete convolution** and can also be represented by $f[n,m]*h[n,m]$ or $(f*h)[m,n]$. In the case of the equation above, we can say that the function $f$ is being convolved with the kernel $h$.
+This operation is referred to as **2D discrete convolution** and can also be represented by $f[n,m] * h[n,m]$ or $(f * h)[m,n]$. In the case of the equation above, we can say that the function $f$ is being convolved with the kernel $h$.
 
 
 ## 2. Convolution and correlation
@@ -291,7 +291,7 @@ The function of the last kernel is to blur an image. Together, the last 2 kernel
 Computers will only convolve finite support signals; that is to say that any $(n, m)$ outside of some rectangular area are zero. Thankfully, numpy's convolution already performs 2D Discrete Convolution of finite support signals.
 
 Therefore, having finite sizes, we can know that if we have an image with dimensions $N1$x$M1$ convolved with a kernel with dimensions $N2$x$M2$, that the output would have dimensions of 
-$(N1 + N2 - 1)$x$(M1 + M2 - 1)$.
+$(N1 + N2 - 1) \times (M1 + M2 - 1)$.
 
  ![](https://i.imgur.com/ese8Owm.webp?maxwidth=760&fidelity=grand)
 
