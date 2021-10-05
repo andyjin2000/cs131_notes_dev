@@ -7,7 +7,7 @@ the notes for your assigned lecture, and once you're down we will merge your not
 Head over to [https://anarcomey.github.io/cs131_notes_dev/](https://anarcomey.github.io/cs131_notes_dev/) to see what the web page notes that you'll create will look like!
 
 ## Steps to create your own notes
-To begin writing your own notes that will appear on a website like this [https://anarcomey.github.io/cs131_notes_dev/](https://anarcomey.github.io/cs131_notes_dev/), have one team member fork the repository building this web page and configure the fork to build a web page for your team to develop on!
+To begin writing your own notes that will appear on a website like this [https://anarcomey.github.io/cs131_notes_dev/](https://andyjin2000.github.io/cs131_notes_dev/), have one team member fork the repository building this web page and configure the fork to build a web page for your team to develop on!
 
 - **Step 1: Fork the repository:** Fork this repository [https://github.com/ANarcomey/cs131_notes_dev](https://github.com/ANarcomey/cs131_notes_dev) into your own GitHub account
 
