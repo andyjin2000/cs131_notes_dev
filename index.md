@@ -21,7 +21,7 @@ These notes accompany the Stanford CS class [**CS131**](http://cs131.stanford.ed
 and Applications. This is a development space for the class notes where you can commit your changes as your team builds
 the notes for your assigned lecture, and once you're down we will merge your notes onto the finished website.
 
-Head over to [https://github.com/ANarcomey/cs131_notes_dev](https://github.com/ANarcomey/cs131_notes_dev) to see the code that creates these web pages!
+Head over to [https://github.com/andyjin2000/cs131_notes_dev](https://github.com/andyjin2000/cs131_notes_dev) to see the code that creates these web pages!
 
 
 ## Steps to create your own notes
