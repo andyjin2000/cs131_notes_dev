@@ -22,9 +22,9 @@ order: 3 # Lecture number for 2020
     - 2D Convolution with LSI Systems
 4. Convolutions and Correlations
     - 2D Discrete Convolution
-    - Examples of Simple Convolutions on an Image
+    - Examples of Simple Convolutions
     - Implementation of Convolutions
-    - Correlations
+    - (Cross) Correlations
     - Examples of (Cross) Correlations
 
 ## 1. Linear Systems
@@ -55,9 +55,7 @@ However, we typically only consider a finite region within this matrix for a spe
 
 Furthermore, we can plot images as a surface, such as the one shown below. The 2D plane indicates the coordinates of the images, and the vertical height indicates the intensity of each pixel.
 
-<!---![](https://i.imgur.com/GHci7zw.png)--->
 <img src="https://i.imgur.com/GHci7zw.png" width="800"/>
-
 
 ### Overview of Filtering
 
@@ -84,7 +82,6 @@ $$g[n,m] = \frac{1}{9} \sum\limits_{k=-1}^{1}\sum\limits_{l=-1}^{1} f[n-k, m-l]$
 
 The moving average filter has the visual effect of slightly blurring the image; it smooths out the image and removes sharp features by averaging those pixels with neighboring values that have smaller intensity.
 
-<!---![](https://i.imgur.com/Dp8ZGqc.png)--->
 <img src="https://i.imgur.com/Dp8ZGqc.png" width="800"/>
 
 #### Filter Mask
@@ -111,7 +108,6 @@ $$g[n,m] = \begin{cases} 255, & f[n,m] > t \\ 0, & \text{otherwise}\end{cases}$$
 
 This image segmentation filter has the visual effect of transforming the image into contrasting dark and light regions, as seen below:
 
-<!---![](https://i.imgur.com/oORn4FW.png)--->
 <img src="https://i.imgur.com/oORn4FW.png" width="800"/>
 
 ## 2. Properties of Linear Systems
@@ -130,57 +126,56 @@ Some amplitude properties include:
 
 Spatial properties include:
 * Causality
-* **Shift invariance**
+* **Shift Invariance**
 * Memory
 
 There are two key categories that we focus on: **Shift Invariance** and **Superposition**.
 
 ### Shift-Invariant (SI) Systems
 
-Given that $f[n,m] \xrightarrow[]{S} g[n,m]$, $S$ is shift-invariant if:
+Given that $f[n,m] \xrightarrow[]{\mathcal{S}} g[n,m]$, $\mathcal{S}$ is considered shift-invariant if
 
 
-$$f[n - n_0, m - m_0] \xrightarrow[]{S} g[n - n_0,m - m_0]$$
+$$f[n - n_0, m - m_0] \xrightarrow[]{\mathcal{S}} g[n - n_0,m - m_0]$$
 
-for all input images $f[n,m]$ and shifts $n_0,m_0$.
+for all input images $f[n,m]$ and shifts $(n_0,m_0)$.
 
-In other words, if we shift the input f by some amount, then the output will also be shifted by the same amount. If we know that $f$ produces $g$, then a shift in $f$ should produce an analgous shift in $g$.
+In other words, if we shift the input image $f$ by some amount, then the output image will also be shifted by that same amount. If we know that $f$ produces $g$, then a shift in $f$ should produce a comparable shift in $g$.
 
-#### Is the moving average system shift invariant?
+#### Is the Moving Average System Shift-Invariant?
 
-We check this by looking at the defintions. We know that $f[n,m] \xrightarrow[]{S} g[n,m]$. We also know that:
+We can check this by considering the equation representing this system that we defined in the previous section. We know that $f[n,m] \xrightarrow[]{S} g[n,m]$. We also know that:
 
 $$g[n,m] = \frac{1}{9} \sum_{k = - 1}^{1} \sum_{l = - 1}^{1} f[n-k,m-l]$$
 
-We pass in a shifted version of $f$ and see that:
+Passing in a version of $f$ shifted by $(n_0, m_0)$ gives us the following result:
 
-$$f[n - n_0,m-m_0] \xrightarrow[]{S} \frac{1}{9} \sum_{k = - 1}^{1} \sum_{l = - 1}^{1} f[(n-n_0)-k,(m-m_0)-l] = g[n-n_0,m-m_0]$$
+$$f[n - n_0,m-m_0] \xrightarrow[]{\mathcal{S}} \frac{1}{9} \sum_{k = - 1}^{1} \sum_{l = - 1}^{1} f[(n-n_0)-k,(m-m_0)-l] = g[n-n_0,m-m_0]$$
 
-So, we see that the moving average system *is* shift invariant.
+Therefore, we can conclude that that the moving average system *is* shift invariant.
 
-### Superposition
+### Superposition (Linear Systems)
 
 When we look at linear filtering, our goal is to form a new image whose pixels are a weighted sum of the original pixel values. For our purposes, we use the same set of weights at each point.
 
-So, we define $S$ to be a linear system if and only if it satisfies the **superposition property** as follows:
+So, we define $\mathcal{S}$ to be a **Linear System** if and only if it satisfies the **Superposition Property** as follows:
 
-$$S[\alpha f_i[n,m] + \beta f_j[k,l] = \alpha S[f_i[n,m]] + \beta S[f_h[k,l]]$$
+$$\mathcal{S}\{\alpha f_i[n,m] + \beta f_j[k,l]\} = \alpha \mathcal{S}\{f_i[n,m]\} + \beta \mathcal{S}\{f_h[k,l]\}$$
 
-In other words, passing through a linear combination of two images through $S$, is equivalent to first passing in each image and then building the linear combination afterwards.
+In other words, passing through a linear combination of two images through $\mathcal{S}$, is equivalent to first passing in each image and then building the linear combination afterwards.
 
-Given this definition, we know that the moving average system is a linear system, while thresholding is not.
+Given this definition, we can conclude that the **Moving Average Filter** is a Linear System because its only operation involves calculating an average value, an operation that is intuitively linear. On the other hand, the **Image Segmentation Thresholding Filter** we discussed earlier is not a Linear System because it is possible that a linear combination of two images could result in pixel values over the threshold while the images' pixel values remain under the threshold when passed through the system individually. 
 
-<!---Shouldn't there be a separate section here for LSI?--->
-We can define a Linear Shift-Invariant (LSI) system as a system that is both Shift-Invariant and follows the **Superposition Property**.
+### Linear Shift-Invariant (LSI) Systems
 
-Additionally and critically, an LSI System is _completely specified by its impulse response_. The following section will discuss exactly what this statement means and how it is relevant in understanding how LSI Systems interact with images.
+Combining these two concepts, we define a Linear Shift-Invariant (LSI) System as a system that is both **Shift Invariant** and follows the **Superposition Property**. These Systems have a number of special properties, but most relevantly and critically, an LSI System is _completely specified by its impulse response_. The following section will discuss exactly what this statement means and how it is relevant in understanding how LSI Systems interact with images.
 
 ## 3. LSI Systems and Convolution
 
 ### Impulse Functions and Responses
-To fully understand the relevance of an impulse response to an LSI System, we must first understand the impulse function behind it. In the field of Image Processing, 2D Impulse functions represent a very simple discrete signal in which one pixel holds a value of 1 while the others remain 0.
+To fully understand the relevance of an impulse response to an LSI System, we must first understand the impulse function behind it. In the field of Image Processing, 2D Impulse functions represent a very simple discrete signal in which one pixel holds a value of 1 while the others remain 0, and these functions are used to determine the output of a given system as will be discussed below.
 
-The most commonly used example of impulse functions can be found in the 2D Delta ($\delta_2$) impulse function. This impulse function can be described by the piecewise function defined below, in which $f[0,0]$ exists at the center of the shown matrix.
+The most common example of a discrete impulse function can be found in the 2D Delta ($\delta_2$) impulse function. This impulse function can be described by the piecewise function defined below, in which $\delta_2[0,0]$ exists at the center of the shown matrix.
 
 $$ \delta_2[n,m]=   \left\{
 \begin{array}{ll}
@@ -211,7 +206,7 @@ We can repurpose this equation, replacing the input image $f$ with the $\delta_2
 
 $$\delta_2[n,m] \overset{\mathcal{S}}\rightarrow h[n,m] = \frac{1}{9} \sum\limits_{k=-1}^{1}\sum\limits_{l=-1}^{1} \delta_2[n-k, m-l]$$
 
-Running this function for each pixel in the input image, we get an impulse response $h$ of the following form:
+Running this function for each pixel in the input image and its surrounding neighbors, we get an impulse response $h$ of the following form:
 
 $$\begin{bmatrix}
     0&0&0&0&0 \\
@@ -221,7 +216,7 @@ $$\begin{bmatrix}
          0& 0& 0 &0 & 0
 \end{bmatrix}$$
 
-If this looks familiar, it is because this impulse response output $h$ is identical to the Moving Average filter discussed previously. Therefore, passing a $\delta_2$ impulse function into this LSI System produces a Moving Average filter that can be used for smoothing.
+If this looks familiar, it is because this impulse response output $h$ is identical to the Moving Average filter discussed previously. Therefore, passing the $\delta_2$ impulse function into this LSI System produces a Moving Average filter that can be used for image smoothing.
 
 As stated earlier, _an LSI System can be completely specified by its impulse response_. This means that the impulse response produced by passing some impulse function through an LSI system can be used to predict what a system's output image will look like. This statement also indicates that, given an input image and an impulse response for an LSI System, we can actually use this information to generate the corresponding output image.
 
@@ -229,7 +224,7 @@ As stated earlier, _an LSI System can be completely specified by its impulse res
 
 Convolution is an operation that describes the output of an LSI System, a specific type of system with properties as discussed previously. Generally, convolution an operation that involves transforming an input image by applying a defined kernel to each pixel in order to produce a resulting transformed output image. 2D Convolution is consider one of the most critical and most often used operations in image processing and computer vision.
 
-We discussed how the concept of a kernel might be used to apply a filter to an image using the _Moving Average Filter_ example, but now that we understand the concept of impulse functions and impulse responses, we can generalize this process to an arbirary impulse response $h$.
+We've discussed how the concept of a kernel might be used to apply a filter to an image using the _Moving Average Filter_ example, but now that we understand the concept of impulse functions and impulse responses, we can generalize this process to an arbirary impulse response $h$.
 
 We know that LSI Systems satisfy the **Superposition Property** and the **Shift-Invariance Property**. Additionally, we have just discussed that:
 
@@ -237,9 +232,8 @@ $$\delta_2[n,m] \overset{\mathcal{S}}\rightarrow h[n,m]$$
 
 Using these three properties, we can derive an equation that describes an output image $g$ produced by an LSI system solely in terms of an input image $f$ and a kernel $h$. 
 
-In order to do so, we must first imagine the input image $f$ as a sum of impulses or shifted $\delta_2$ functions. Let $f[n,m]$ represent a 3X3 input image, and let $\delta_2[n,m]$ represent our delta impulse function as described previously. As you can see below, for each pixel in our image, we produce a new shifted $\delta_2$ function multiplied the initial pixels value.
+In order to do so, we must first imagine the input image $f$ as a sum of impulses or shifted $\delta_2$ functions. Let $f[n,m]$ represent a $3\times 3$ input image, and let $\delta_2[n,m]$ represent our delta impulse function as described previously. As you can see below, for each pixel in our image, we produce a new shifted $\delta_2$ function multiplied the initial pixels value.
 
-<!---![](https://i.imgur.com/QQuILc2.png[/img])--->
 <img src="https://i.imgur.com/QQuILc2.png" width="800"/>
 
 
@@ -257,11 +251,11 @@ f[n,m] =\sum_{k=-\infty}^\infty\sum_{l=-\infty}^\infty f[k,l]\cdot \delta_2[n-k,
 
 Therefore we can conclude that:
 
-$$g[n,m]=S\{\sum_{k=-\infty}^\infty\sum_{l=-\infty}^\infty f[k,l]\cdot \delta_2[n-k,m-l]\}$$
+$$g[n,m]=\mathcal{S}\{\sum_{k=-\infty}^\infty\sum_{l=-\infty}^\infty f[k,l]\cdot \delta_2[n-k,m-l]\}$$
 
-Next, by applying the Superposition Property, in which we treat the $f[k,l]$ terms as constants and only apply the _System_ to the shifted $\delta_2$ functions, we get the following:
+Next, by applying the Superposition Property, in which we treat the $f[k,l]$ terms as constants and only apply the System $\mathcal{S}$ to the shifted $\delta_2$ functions, we get the following:
 
-$$g[n,m]=\sum_{k=-\infty}^\infty\sum_{l=-\infty}^\infty f[k,l]\cdot S\{\delta_2[n-k,m-l]\}$$
+$$g[n,m]=\sum_{k=-\infty}^\infty\sum_{l=-\infty}^\infty f[k,l]\cdot \mathcal{S}\{\delta_2[n-k,m-l]\}$$
 
 Finally, we use our knowledge that $\delta_2[n,m] \overset{\mathcal{S}}\rightarrow h[n,m]$, and we apply the Shift-Invariance Property, which allows us to write the equation as follows:
 
@@ -273,49 +267,44 @@ This operation is referred to as **2D discrete convolution** and can also be rep
 ## 4. Convolution and Correlation
 
 ### 2D Discrete Convolution
-In computer vision, most of the time we use convolution with 2D discrete signal. The equation of 2D discrete convolution is defined as:
+In computer vision, convolution is often performed 2D discrete signal, especially in image processing applications. The equation of 2D discrete convolution as derived above is defined as:
 
 $$f[n,m] * h[n,m] = \sum\limits_{k=-\infty}^{\infty} \sum\limits_{l=-\infty}^{\infty} f[k, l] h[n-k, m-l]$$
 
-The meaning of the equation also can be explained graphically. When we want to compute the convolution at location (n, m), we need the input image $f$ as well as the impulse response $h$ which is exactly the  kernel mentioned in previous classes.
+The reasoning behind this equation can also be explained graphically. When we want to compute the convolution at a given location $(n, m)$, we need the input image $f$ as well as the impulse response $h$, the matrix we've previously referred to as a _kernel_.
 
-<!---![](https://i.imgur.com/sdWgUmz.png)--->
 <img src="https://i.imgur.com/sdWgUmz.png" width="800"/>
 
-The following is the algorithm of computing convolution for 2D discrete values:
-1. To compute the convolution, first, we fold the kernel $h[k, l]$ to let the indexes become negative as $h[-k, -l]$. In other words, we flip the kernel both vertically and horizontally to form $h[-k, -l]$.
+The following is the algorithm of computing convolution for 2D discrete functions like images:
+1. To compute convolution, first, we fold the kernel $h[k, l]$ such that the indexes become inverted as $h[-k, -l]$. In other words, we flip the kernel both vertically and horizontally to form $h[-k, -l]$.
 
-<!---![](https://i.imgur.com/Pd3JlWg.png)--->
 <img src="https://i.imgur.com/Pd3JlWg.png" width="800"/>
 
-2. We shift the folded kernel by (n, m) to obtain $h[n-k, m-l]$ and make all the values outside the kernel be zero. 
+2. Next, we shift the folded kernel by $(n, m)$ to obtain $h[n-k, m-l]$. This is done so that the folded kernel now overlaps the pixel at $(n,m)$ and its surrounding neighbors. This will allow us to easily perform computations for convolution in the following steps. Please note that all the values outside our $3\times 3$ kernel are zero.
 
-<!---![](https://i.imgur.com/TPjmLYV.png)--->
 <img src="https://i.imgur.com/TPjmLYV.png" width="800"/>
 
 
-3. After that, we can multiply $h[n-k, m-l]$ by $f[k, l]$, which is overlapping the kernel and original input and then performing element-wise multiplication between the original input and the kernel in the cells within the neighborhood.
+3. After that, we can multiply $h[n-k, m-l]$ by $f[k, l]$, which is overlapping the kernel and original input and then performing element-wise multiplication between the original input and the kernel in the cells within the neighborhood. This essentially allows us to compute a weighted sum of the pixel intensities within the neighborhood based on the values defined in the kernel $h$.
 
-<!---![](https://i.imgur.com/zfgCLrg.png)--->
 <img src="https://i.imgur.com/zfgCLrg.png" width="800"/>
 
+4. Finally, we sum up the results to obtain the output value at $(n, m)$. In order to fully convolve a given input image and build an output image, we must run this convolution process on every pixel $(n,m)$ in the input.
 
-4. We sum up all the results to obtain the output value at (n, m).
+### Examples of Simple Convolutions
+Now, let's look at a few basic examples of convolving a kernel with an actual image. 
 
-### Examples of Simple Convolutions on an Image
-Let's look at a few basic examples of multiplying a kernel with an actual image. 
-
-Consider the effect of this kernel on an image:
+Consider the effect of the following kernel on an image:
 
 ![](https://imgur.com/m0Kva3U.png)
 
-There are a few things of note here. First, this kernel is perfectly symmetrical, which means that flipping has no effect on it. Also, every coeffecient except for the center value is 0. Due to this, peforming an elementwise multiplication will return the value at the center pixel. As a result, this particular kernel is a sort of **Identity Kernel** that when applied to an image, will return the image itself.
+There are a few things of note here. First, this kernel is perfectly symmetrical, which means that folding has no effect on it. Also, every coeffecient except for the center value is 0. Due to this, peforming an elementwise multiplication will return the value at the center pixel. As a result, this particular kernel is a sort of **Identity Kernel** that when applied to an image, will simply return the image itself.
 
 For another example, consider the following kernel:
 
 ![](https://imgur.com/301khsT.png)
 
-We first flip the kernel, relocating the 1 to the left and then perform an elementwise mutliplication. As we can see, this outputs the leftmost pixel for a given location. As a result, when applying the kernel to an image, the returned image will be shifted one pixel to the right.
+We first fold the kernel, relocating the 1 to the left and then perform an elementwise mutliplication. As we can see, this outputs the leftmost pixel for a given location. As a result, when applying the kernel to an image, the returned image will be shifted one pixel to the right.
 
 Convolution also allows us to perform other effects, such as sharpening. This is the combination of kernels to sharpen an image:
 
@@ -329,42 +318,41 @@ The function of the last kernel is to blur an image. Together, the last 2 kernel
 
 
 ### Implementation of Convolutions
-Computers will only convolve finite support signals; that is to say that any $(n, m)$ outside of some rectangular area are zero. Thankfully, numpy's convolution already performs 2D Discrete Convolution of finite support signals.
+Computers will only convolve finite support signals; that is to say that any $(n, m)$ outside of some rectangular area are zero. Thankfully, NumPy's convolution already performs 2D Discrete Convolution of finite support signals.
 
-Therefore, having finite sizes, we can know that if we have an image with dimensions $N1$x$M1$ convolved with a kernel with dimensions $N2$x$M2$, that the output would have dimensions of 
+Therefore, having finite sizes, we can know that if we have an image with dimensions $N1 \times M1$ convolved with a kernel with dimensions $N2 \times M2$, that the output would have dimensions of 
 $(N1 + N2 - 1) \times (M1 + M2 - 1)$.
 
-<!---![](https://i.imgur.com/ese8Owm.webp?maxwidth=760&fidelity=grand)--->
 <img src="https://i.imgur.com/ese8Owm.webp?maxwidth=760&fidelity=grand" width="800"/>
 
 To reach the dimensions of $(N1 + N2 - 1) \times (M1 + M2 - 1)$, we can imagine the worst edge case in which there is only a 1 pixel overlap between that image and the kernel for the convolution. 
 
 ![](https://i.imgur.com/1D5r1gB.png)
 
-Another such bounding edge case, would be with the edges themselves.
+Another such bounding edge case would be with the edges themselves.
 
 ![](https://i.imgur.com/ea1cNBv.png)
 
-When we convolve around the edges of the image, the kernel invariably goes outside of the range of the image. To continue the convolution there are a variety of strategies that can be employed:
-* **Zero "Padding"**: all values outside of the image/rectangular area are assumed to be zero
-* **Edge Value Replication**: replicates the last column of the image into the area outside of the image, “continuing” the image
-* **Mirror Extension**: similar to edge value replication, however, instead of replicating the last column of the image, we copy reflections of the image - ie: the farther away from the image, values from further inside the image are replicated
+When we convolve around the edges of the image, the kernel invariably goes outside of the range of the image. To address this edge case, there are a variety of strategies that can be employed:
+* **Zero "Padding"**: All values outside of the image/rectangular area are assumed to be zero.
+* **Edge Value Replication**: Replicates the pixels closes to the edges of an image into the area outside of the image, “extending” the image.
+* **Mirror Extension**: Similar to edge value replication, however, instead of replicating the edge pixels of the image, we copy reflections of the image - ie: the farther away from the image, values from further inside the image are replicated.
 
-### Correlations
-(Cross) Correlations are denoted by the symbol $**$
+The specific padding technique selected for a given operation can change based on the specific application. Although **Zero Padding** is used most often, there are cases in which we would not want to use this padding technique. For example, in a situation in which we expect the background of the input image to be a certain, solid color, **Edge Value Replication** would be a better choice because it could replicate the current background.
+
+### (Cross) Correlations
 
 While Convolutions express the amount of overlap of one function as it is shifted over another function, Correlations compare the similarity of two sets of data, computing a measure of similarity of two input signals as they are shifted by one another.
 
-The Cross Correlation of two 2D signals $f[n,m]$ and $h[n,m]$ is given by the equation:
+(Cross) Correlations are denoted by the symbol $**$, and the Cross Correlation of two 2D signals $f[n,m]$ and $h[n,m]$ is given by the equation:
 
 $$f[n,m] ** h[n,m] = \sum_{k=-\infty}^{\infty} \sum_{l=-\infty}^{\infty} f[k,l] \cdot h[n+k,m+l]$$
 
-As seen, correlations are equivalent to convolutions without the horizontal and vertical flipping of the kernel. However, due to the flipping, Convolutions and Correlations _**DO NOT**_ produce the same result.
+As seen from the given equation, correlations are equivalent to convolutions without the horizontal and vertical flipping of the kernel. However, due to the flipping, Convolutions and Correlations _**DO NOT**_ produce the same result.
 
 <img src="https://imgur.com/3qS4Dw8.png" width="800"/>
-<!---![](https://imgur.com/3qS4Dw8.png)--->
 
-The Convolution of $f*g$ and the Correlation of $f**g$ are equivalent only when $g$ is symmetrical, as $g$ would remain unchanged after flipping. 
+The Convolution of $f * g$ and the Correlation of $f ** g$ are equivalent only when $g$ is symmetrical, as $g$ would remain unchanged after folding. 
 
 ### Examples of (Cross) Correlation
 
@@ -386,7 +374,7 @@ However, if we were to instead try to find the correlation between a single blac
 
 ![](https://imgur.com/SjzkuRj.png)
 
-Now applying a threshold to the output image $r$, we are given a closer approximation of where the black squares were originally.
+Now, applying a threshold to the output image $r$, we are given a closer approximation of where the black squares were originally.
 
 ![](https://imgur.com/tEjF4nc.png)
 
@@ -395,4 +383,3 @@ For a real life example, let us take the case of stereo vision, triangulating a 
 Imagine we have two optical sensors that are capturing a scene from slightly different points of view. To find the depth of a point in the scene, we must first know the location of the given point in both images. One way to achieve this is to take a position from one image and find a correlation in the second image, moving along a fixed axis, and the area where the correlation is the largest is the area with the greatest similarity.
 
 <img src="https://imgur.com/Snaa68Q.png" width="800"/>
-<!---![](https://imgur.com/Snaa68Q.png)--->
