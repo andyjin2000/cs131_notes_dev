@@ -4,8 +4,6 @@ keywords: (insert comma-separated keywords here)
 order: 3 # Lecture number for 2020
 ---
 
-# CS 131 Lecture 3 Notes: Filters and Convolutions
-
 **Authors:** AJ Arnolie, Andy Jin, Cynthia Liu, Edward Park, Daulet Tuleubayev, Jerry Wei
 
 ## Contents
