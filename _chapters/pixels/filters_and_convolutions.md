@@ -316,22 +316,21 @@ The function of the last kernel is to blur an image. Together, the last 2 kernel
 
 
 ### Implementation of Convolutions
-Computers will only convolve finite support signals; that is to say that any $(n, m)$ outside of some rectangular area are zero. Thankfully, NumPy's convolution already performs 2D Discrete Convolution of finite support signals.
+Computers will only convolve finite support signals. That is to say that any $(n, m)$ outside of some rectangular area are zero. In a practical sense, this just means we can't convolve images with infinite pixels in any diretion. NumPy's convolution functions provide support for this 2D Discrete Convolution of finite support signals (normal images).
 
-Therefore, having finite sizes, we can know that if we have an image with dimensions $N1 \times M1$ convolved with a kernel with dimensions $N2 \times M2$, that the output would have dimensions of 
-$(N1 + N2 - 1) \times (M1 + M2 - 1)$.
+Given an image with dimensions $N1 \times M1$ convolved with a kernel with dimensions $N2 \times M2$ where all dimensions are finite, the output of the convolution of the given input image and kernel would have dimensions of $(N1 + N2 - 1) \times (M1 + M2 - 1)$.
 
 <img src="https://i.imgur.com/ese8Owm.webp?maxwidth=760&fidelity=grand" width="800"/>
 
-To reach the dimensions of $(N1 + N2 - 1) \times (M1 + M2 - 1)$, we can imagine the worst edge case in which there is only a 1 pixel overlap between that image and the kernel for the convolution. 
+To reach these dimensions of $(N1 + N2 - 1) \times (M1 + M2 - 1)$, we can imagine the worst edge case in which there is only a 1 pixel overlap between that image and the kernel for the convolution as shown in the image below. 
 
 ![](https://i.imgur.com/1D5r1gB.png)
 
-Another such bounding edge case would be with the edges themselves.
+Another such bounding edge case would be when the edges of the images themselves overlap as shown below.
 
 ![](https://i.imgur.com/ea1cNBv.png)
 
-When we convolve around the edges of the image, the kernel invariably goes outside of the range of the image. To address this edge case, there are a variety of strategies that can be employed:
+When we convolve around the edges of an image, the kernel invariably goes outside of the range of the image. To address this edge case, there are a variety of strategies that can be employed:
 * **Zero "Padding"**: All values outside of the image/rectangular area are assumed to be zero.
 * **Edge Value Replication**: Replicates the pixels closes to the edges of an image into the area outside of the image, “extending” the image.
 * **Mirror Extension**: Similar to edge value replication, however, instead of replicating the edge pixels of the image, we copy reflections of the image - ie: the farther away from the image, values from further inside the image are replicated.
@@ -340,35 +339,35 @@ The specific padding technique selected for a given operation can change based o
 
 ### (Cross) Correlations
 
-While Convolutions express the amount of overlap of one function as it is shifted over another function, Correlations compare the similarity of two sets of data, computing a measure of similarity of two input signals as they are shifted by one another.
+While **convolutions** express the amount of overlap of one function as it is shifted over another function, **correlations** compare the similarity of two sets of data, computing a measure of similarity of two input signals as they are shifted by one another. While convolution is a filtering operation, correlation is a measure of similarity.
 
-(Cross) Correlations are denoted by the symbol $**$, and the Cross Correlation of two 2D signals $f[n,m]$ and $h[n,m]$ is given by the equation:
+(Cross) Correlations are denoted by the symbol $**$, and the cross-correlation of two 2D signals $f[n,m]$ and $h[n,m]$ is given by the equation:
 
 $$f[n,m] ** h[n,m] = \sum_{k=-\infty}^{\infty} \sum_{l=-\infty}^{\infty} f[k,l] \cdot h[n+k,m+l]$$
 
-As seen from the given equation, correlations are equivalent to convolutions without the horizontal and vertical flipping of the kernel. However, due to the flipping, Convolutions and Correlations _**DO NOT**_ produce the same result.
+As seen from the equation provided above, the equation for correlations is equivalent to that of convolutions except the $h[n-k,m-l]$ term is replaced with a $h[n+k,m+l]$ term. Conceptually, this means that correlations are equivalent to convolutions without the horizontal and vertical flipping of the kernel. However, due to the flipping, convolutions and correlations _**DO NOT**_ produce the same result.
 
 <img src="https://imgur.com/3qS4Dw8.png" width="800"/>
 
 The Convolution of $f * g$ and the Correlation of $f ** g$ are equivalent only when $g$ is symmetrical, as $g$ would remain unchanged after folding. 
 
-### Examples of (Cross) Correlation
+### Examples of (Cross) Correlations
 
 Let's imagine that there is an image $f$ that is our target image. 
 
 ![](https://i.imgur.com/lP8LuIx.png)
 
-Now let us imagine that there is an image $g$ that is image $f$ with the addition of noise. 
+Now let us imagine that there is an image $g$ that equivalent to the intial image $f$ but with the addition of noise. 
 
 ![](https://i.imgur.com/0o9uQ9l.png)
 
-From image $g$ we wish to find the locations of the black squares in image $f$.
+Through evaluating image $g$, we wish to find the locations of the black squares in image $f$.
 
-One method to find where the black squares are located would be to implement a threshold on the intensity values. However, there is too much noise present in $g$ that such a method is unviable.
+One method to do this would be to implement a threshold on the intensity values. However, there is too much noise present in $g$ that such a method is unviable.
 
 ![](https://i.imgur.com/mI2tkCU.png)
 
-However, if we were to instead try to find the correlation between a single black square $h$, the areas we are trying to identify, and $g$, our output would be an image with the areas most similar to $h$ in $g$ as the darkest.
+However, a more effective method for locating the black squares in the image would be to use correlation. Here, we can define a kernel $h$ that holds the pattern we aim to detect, a black square. By computing the correlation between the noisy image $g$ and the black square kernel $h$, we get the resulting image shown below in which the areas most similar to the pattern $h$ are the darkest.
 
 ![](https://imgur.com/SjzkuRj.png)
 
