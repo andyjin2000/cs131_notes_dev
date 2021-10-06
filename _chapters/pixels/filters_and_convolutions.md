@@ -278,20 +278,20 @@ The reasoning behind this equation can also be explained graphically. When we wa
 
 The following is the algorithm of computing convolution for 2D discrete functions like images:
 
-1. To compute convolution, first, we fold the kernel $h[k, l]$ such that the indexes become inverted as $h[-k, -l]$. In other words, we flip the kernel both vertically and horizontally to form $h[-k, -l]$.
+- To compute convolution, first, we fold the kernel $h[k, l]$ such that the indexes become inverted as $h[-k, -l]$. In other words, we flip the kernel both vertically and horizontally to form $h[-k, -l]$.
 
 <img src="https://i.imgur.com/Pd3JlWg.png" width="800"/>
 
-2. Next, we shift the folded kernel by $(n, m)$ to obtain $h[n-k, m-l]$. This is done so that the folded kernel now overlaps the pixel at $(n,m)$ and its surrounding neighbors. This will allow us to easily perform computations for convolution in the following steps. Please note that all the values outside our $3\times 3$ kernel are zero.
+- Next, we shift the folded kernel by $(n, m)$ to obtain $h[n-k, m-l]$. This is done so that the folded kernel now overlaps the pixel at $(n,m)$ and its surrounding neighbors. This will allow us to easily perform computations for convolution in the following steps. Please note that all the values outside our $3\times 3$ kernel are zero.
 
 <img src="https://i.imgur.com/TPjmLYV.png" width="800"/>
 
 
-3. After that, we can multiply $h[n-k, m-l]$ by $f[k, l]$, which is overlapping the kernel and original input and then performing element-wise multiplication between the original input and the kernel in the cells within the neighborhood. This essentially allows us to compute a weighted sum of the pixel intensities within the neighborhood based on the values defined in the kernel $h$.
+- After that, we can multiply $h[n-k, m-l]$ by $f[k, l]$, which is overlapping the kernel and original input and then performing element-wise multiplication between the original input and the kernel in the cells within the neighborhood. This essentially allows us to compute a weighted sum of the pixel intensities within the neighborhood based on the values defined in the kernel $h$.
 
 <img src="https://i.imgur.com/zfgCLrg.png" width="800"/>
 
-4. Finally, we sum up the results to obtain the output value at $(n, m)$. In order to fully convolve a given input image and build an output image, we must run this convolution process on every pixel $(n,m)$ in the input.
+- Finally, we sum up the results to obtain the output value at $(n, m)$. In order to fully convolve a given input image and build an output image, we must run this convolution process on every pixel $(n,m)$ in the input.
 
 ### Examples of Simple Convolutions
 Now, let's look at a few basic examples of convolving a kernel with an actual image. 
