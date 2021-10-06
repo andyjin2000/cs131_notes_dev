@@ -65,7 +65,7 @@ $$f[n,m] \rightarrow \boxed{\text{System } \mathcal{S}} \rightarrow g[n,m]$$
 
 Below are several equivalent notations to define a system transforming input $f$ into output $g$:
 - $g = \mathcal{S}[f]$
-- $g[n,m] = \mathcal{S}\{f[n,m]\}$
+- $g[n,m] = \mathcal{S} \{ f[n,m] \} $
 - $f[n,m] \overset{\mathcal{S}}\rightarrow g[n,m]$
  
 ### Moving Average Filter
@@ -220,9 +220,9 @@ As stated earlier, _an LSI System can be completely specified by its impulse res
 
 ### 2D Convolution with LSI Systems
 
-Convolution is an operation that describes the output of an LSI System, a specific type of system with properties as discussed previously. Generally, convolution an operation that involves transforming an input image by applying a defined kernel to each pixel in order to produce a resulting transformed output image. 2D Convolution is consider one of the most critical and most often used operations in image processing and computer vision.
+Convolution is an operation that describes the output of an LSI System, a specific type of system with properties as discussed previously. Generally, convolution is an operation that involves transforming an input image by applying a defined kernel to each pixel in order to produce a resulting transformed output image. 2D Convolution is considered one of the most critical and most frequently used operations in image processing and computer vision.
 
-We've discussed how the concept of a kernel might be used to apply a filter to an image using the _Moving Average Filter_ example, but now that we understand the concept of impulse functions and impulse responses, we can generalize this process to an arbirary impulse response $h$.
+We've discussed how the concept of a kernel might be used to apply a filter to an image using the _Moving Average Filter_ example, but now that we understand the concept of impulse functions and impulse responses, we can generalize this process to an arbitrary impulse response $h$.
 
 We know that LSI Systems satisfy the **Superposition Property** and the **Shift-Invariance Property**. Additionally, we have just discussed that:
 
@@ -274,20 +274,21 @@ The reasoning behind this equation can also be explained graphically. When we wa
 <img src="https://i.imgur.com/sdWgUmz.png" width="800"/>
 
 The following is the algorithm of computing convolution for 2D discrete functions like images:
-1. To compute convolution, first, we fold the kernel $h[k, l]$ such that the indexes become inverted as $h[-k, -l]$. In other words, we flip the kernel both vertically and horizontally to form $h[-k, -l]$.
+
+    1. To compute convolution, first, we fold the kernel $h[k, l]$ such that the indexes become inverted as $h[-k, -l]$. In other words, we flip the kernel both vertically and horizontally to form $h[-k, -l]$.
 
 <img src="https://i.imgur.com/Pd3JlWg.png" width="800"/>
 
-2. Next, we shift the folded kernel by $(n, m)$ to obtain $h[n-k, m-l]$. This is done so that the folded kernel now overlaps the pixel at $(n,m)$ and its surrounding neighbors. This will allow us to easily perform computations for convolution in the following steps. Please note that all the values outside our $3\times 3$ kernel are zero.
+    2. Next, we shift the folded kernel by $(n, m)$ to obtain $h[n-k, m-l]$. This is done so that the folded kernel now overlaps the pixel at $(n,m)$ and its surrounding neighbors. This will allow us to easily perform computations for convolution in the following steps. Please note that all the values outside our $3\times 3$ kernel are zero.
 
 <img src="https://i.imgur.com/TPjmLYV.png" width="800"/>
 
 
-3. After that, we can multiply $h[n-k, m-l]$ by $f[k, l]$, which is overlapping the kernel and original input and then performing element-wise multiplication between the original input and the kernel in the cells within the neighborhood. This essentially allows us to compute a weighted sum of the pixel intensities within the neighborhood based on the values defined in the kernel $h$.
+    3. After that, we can multiply $h[n-k, m-l]$ by $f[k, l]$, which is overlapping the kernel and original input and then performing element-wise multiplication between the original input and the kernel in the cells within the neighborhood. This essentially allows us to compute a weighted sum of the pixel intensities within the neighborhood based on the values defined in the kernel $h$.
 
 <img src="https://i.imgur.com/zfgCLrg.png" width="800"/>
 
-4. Finally, we sum up the results to obtain the output value at $(n, m)$. In order to fully convolve a given input image and build an output image, we must run this convolution process on every pixel $(n,m)$ in the input.
+    4. Finally, we sum up the results to obtain the output value at $(n, m)$. In order to fully convolve a given input image and build an output image, we must run this convolution process on every pixel $(n,m)$ in the input.
 
 ### Examples of Simple Convolutions
 Now, let's look at a few basic examples of convolving a kernel with an actual image. 
@@ -318,11 +319,11 @@ The function of the last kernel is to blur an image. Together, the last 2 kernel
 ### Implementation of Convolutions
 Computers will only convolve finite support signals. That is to say that any $(n, m)$ outside of some rectangular area are zero. In a practical sense, this just means we can't convolve images with infinite pixels in any diretion. NumPy's convolution functions provide support for this 2D Discrete Convolution of finite support signals (normal images).
 
-Given an image with dimensions $N1 \times M1$ convolved with a kernel with dimensions $N2 \times M2$ where all dimensions are finite, the output of the convolution of the given input image and kernel would have dimensions of $(N1 + N2 - 1) \times (M1 + M2 - 1)$.
+Given an image with dimensions $N_1 \times M_1$ convolved with a kernel with dimensions $N_2 \times M_2$ where all dimensions are finite, the output of the convolution of the given input image and kernel would have dimensions of $(N_1 + N_2 - 1) \times (M_1 + M_2 - 1)$.
 
 <img src="https://i.imgur.com/ese8Owm.webp?maxwidth=760&fidelity=grand" width="800"/>
 
-To reach these dimensions of $(N1 + N2 - 1) \times (M1 + M2 - 1)$, we can imagine the worst edge case in which there is only a 1 pixel overlap between that image and the kernel for the convolution as shown in the image below. 
+To determine these dimensions of $(N_1 + N_2 - 1) \times (M_1 + M_2 - 1)$, we can imagine the worst edge case in which there is only a 1 pixel overlap between that image and the kernel for the convolution as shown in the image below. 
 
 ![](https://i.imgur.com/1D5r1gB.png)
 
@@ -333,7 +334,7 @@ Another such bounding edge case would be when the edges of the images themselves
 When we convolve around the edges of an image, the kernel invariably goes outside of the range of the image. To address this edge case, there are a variety of strategies that can be employed:
 * **Zero "Padding"**: All values outside of the image/rectangular area are assumed to be zero.
 * **Edge Value Replication**: Replicates the pixels closes to the edges of an image into the area outside of the image, “extending” the image.
-* **Mirror Extension**: Similar to edge value replication, however, instead of replicating the edge pixels of the image, we copy reflections of the image - ie: the farther away from the image, values from further inside the image are replicated.
+* **Mirror Extension**: Similar to edge value replication, however, instead of replicating the edge pixels of the image, we copy reflections of the image; that is, for the values farther away from the image, values from further inside the image are replicated.
 
 The specific padding technique selected for a given operation can change based on the specific application. Although **Zero Padding** is used most often, there are cases in which we would not want to use this padding technique. For example, in a situation in which we expect the background of the input image to be a certain, solid color, **Edge Value Replication** would be a better choice because it could replicate the current background.
 
