@@ -64,8 +64,11 @@ A **system**, denoted by system operator $\mathcal{S}$, converts an input functi
 $$f[n,m] \rightarrow \boxed{\text{System } \mathcal{S}} \rightarrow g[n,m]$$
 
 Below are several equivalent notations to define a system transforming input $f$ into output $g$:
+
 $$g = \mathcal{S}[f]$$
+
 $$g[n,m] = \mathcal{S}\{f[n,m]\}$$
+
 $$f[n,m] \overset{\mathcal{S}}\rightarrow g[n,m]$$
  
 ### Moving Average Filter
